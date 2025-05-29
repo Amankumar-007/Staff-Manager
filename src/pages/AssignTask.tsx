@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
-import { useTasks } from '../context/TaskContext';
+import { useTasks } from '../hooks/useTasks';
 import { useAuth } from '../context/AuthContext';
 import { Task } from '../types';
-import { ClipboardList, Calendar, AlertCircle } from 'lucide-react';
+import { ClipboardList, AlertCircle } from 'lucide-react';
 
 interface TaskFormData {
   title: string;
@@ -42,7 +42,7 @@ const AssignTask: React.FC = () => {
 
       addTask(newTask);
       navigate(`/employee/${employeeId}`);
-    } catch (err) {
+    } catch (error) {
       setError('Failed to assign task. Please try again.');
     } finally {
       setIsLoading(false);

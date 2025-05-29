@@ -8,6 +8,7 @@ const mockTasks: Task[] = [
     description: 'Finish the Q2 financial report for the board meeting',
     status: 'pending',
     dueDate: '2025-06-30',
+    createdAt: '2025-05-01',
   },
   {
     id: 't2',
@@ -15,6 +16,7 @@ const mockTasks: Task[] = [
     description: 'Revise the employee handbook with new policies',
     status: 'in-progress',
     dueDate: '2025-07-15',
+    createdAt: '2025-05-10',
   },
   {
     id: 't3',
@@ -22,6 +24,7 @@ const mockTasks: Task[] = [
     description: 'Complete performance reviews for the engineering team',
     status: 'completed',
     dueDate: '2025-06-15',
+    createdAt: '2025-04-20',
   },
   {
     id: 't4',
@@ -29,6 +32,7 @@ const mockTasks: Task[] = [
     description: 'Create training materials for new hires',
     status: 'pending',
     dueDate: '2025-07-30',
+    createdAt: '2025-05-15',
   },
 ];
 
@@ -43,8 +47,8 @@ export const mockUsers: User[] = [
   },
   {
     id: 'u2',
-    name: 'John Doe',
-    email: 'john@example.com',
+    name: 'Aman',
+    email: 'aman@example.com',
     role: 'employee',
     password: 'employee123',
   },
@@ -54,8 +58,8 @@ export const mockUsers: User[] = [
 export const mockEmployees: Employee[] = [
   {
     id: 'e1',
-    name: 'John Doe',
-    email: 'john@example.com',
+    name: 'Aman',
+    email: 'aman@example.com',
     role: 'employee',
     position: 'Software Engineer',
     department: 'Engineering',

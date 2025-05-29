@@ -1,16 +1,18 @@
 import React from 'react';
 import { useAuth } from '../context/AuthContext';
 import { useEmployees } from '../context/EmployeeContext';
+import { useTasks } from '../hooks/useTasks';
 import TaskList from '../components/TaskList';
 import { ClipboardList } from 'lucide-react';
 
 const Tasks: React.FC = () => {
   const { user } = useAuth();
   const { employees } = useEmployees();
+  const { getTasksByEmployee } = useTasks();
   
   // Find the current employee's full details
   const currentEmployee = employees.find((emp) => emp.email === user?.email);
-  const tasks = currentEmployee?.tasks || [];
+  const tasks = currentEmployee ? getTasksByEmployee(currentEmployee.id) : [];
 
   return (
     <div className="p-6">
@@ -25,7 +27,7 @@ const Tasks: React.FC = () => {
           <h2 className="text-xl font-semibold text-gray-800">Task List</h2>
         </div>
 
-        <TaskList tasks={tasks} />
+        <TaskList tasks={tasks} showActions={true} />
       </div>
     </div>
   );

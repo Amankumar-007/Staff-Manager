@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useForm } from 'react-hook-form';
-import { LogIn, User, Lock, AlertCircle } from 'lucide-react';
+import { Lock, AlertCircle, Mail } from 'lucide-react';
+import styled from 'styled-components';
 
 interface LoginFormData {
   email: string;
@@ -36,157 +37,298 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col justify-center py-12 sm:px-6 lg:px-8">
-      <div className="sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="flex justify-center">
-          <User size={48} className="text-indigo-600" />
-        </div>
-        <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
-          Sign in to your account
-        </h2>
-        <p className="mt-2 text-center text-sm text-gray-600">
-          Or{' '}
-          <Link to="/register" className="font-medium text-indigo-600 hover:text-indigo-500">
-            create a new account
-          </Link>
-        </p>
-      </div>
+    <StyledWrapper>
+      <form className="form_main" onSubmit={handleSubmit(onSubmit)}>
+        <h1 className="heading">Welcome back</h1>
+        
+        {error && (
+          <div className="error-container">
+            <AlertCircle className="error-icon" />
+            <p className="error-text">{error}</p>
+          </div>
+        )}
 
-      <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-        <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
-          {error && (
-            <div className="mb-4 bg-red-50 border-l-4 border-red-400 p-4">
-              <div className="flex">
-                <div className="flex-shrink-0">
-                  <AlertCircle className="h-5 w-5 text-red-400" />
-                </div>
-                <div className="ml-3">
-                  <p className="text-sm text-red-700">{error}</p>
-                </div>
-              </div>
-            </div>
+        <div className="inputContainer">
+          <Mail className="inputIcon" />
+          <input
+            {...register('email', {
+              required: 'Email is required',
+              pattern: {
+                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                message: 'Invalid email address',
+              },
+            })}
+            placeholder="Email address"
+            className="inputField"
+            type="email"
+          />
+          {errors.email && (
+            <p className="error-message">{errors.email.message}</p>
           )}
+        </div>
 
-          <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
-            <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-                Email address
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <User className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="email"
-                  type="email"
-                  autoComplete="email"
-                  className={`block w-full pl-10 pr-3 py-2 border ${
-                    errors.email ? 'border-red-300' : 'border-gray-300'
-                  } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
-                  placeholder="you@example.com"
-                  {...register('email', {
-                    required: 'Email is required',
-                    pattern: {
-                      value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
-                      message: 'Invalid email address',
-                    },
-                  })}
-                />
-              </div>
-              {errors.email && (
-                <p className="mt-2 text-sm text-red-600">{errors.email.message}</p>
-              )}
-            </div>
+        <div className="inputContainer">
+          <Lock className="inputIcon" />
+          <input
+            {...register('password', {
+              required: 'Password is required',
+              minLength: {
+                value: 6,
+                message: 'Password must be at least 6 characters',
+              },
+            })}
+            placeholder="Password"
+            className="inputField"
+            type="password"
+          />
+          {errors.password && (
+            <p className="error-message">{errors.password.message}</p>
+          )}
+        </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-                Password
-              </label>
-              <div className="mt-1 relative rounded-md shadow-sm">
-                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
-                </div>
-                <input
-                  id="password"
-                  type="password"
-                  autoComplete="current-password"
-                  className={`block w-full pl-10 pr-3 py-2 border ${
-                    errors.password ? 'border-red-300' : 'border-gray-300'
-                  } rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm`}
-                  placeholder="••••••••"
-                  {...register('password', {
-                    required: 'Password is required',
-                    minLength: {
-                      value: 6,
-                      message: 'Password must be at least 6 characters',
-                    },
-                  })}
-                />
-              </div>
-              {errors.password && (
-                <p className="mt-2 text-sm text-red-600">{errors.password.message}</p>
-              )}
-            </div>
+        <div className="options">
+          <label className="remember">
+            <input type="checkbox" />
+            <span>Remember me</span>
+          </label>
+          <a href="#" className="forgot">Forgot password?</a>
+        </div>
 
-            <div className="flex items-center justify-between">
-              <div className="flex items-center">
-                <input
-                  id="remember-me"
-                  name="remember-me"
-                  type="checkbox"
-                  className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-                />
-                <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-                  Remember me
-                </label>
-              </div>
+        <button type="submit" className="submit-button" disabled={isLoading}>
+          {isLoading ? 'Signing in...' : 'Sign in'}
+        </button>
 
-              <div className="text-sm">
-                <a href="#" className="font-medium text-indigo-600 hover:text-indigo-500">
-                  Forgot your password?
-                </a>
-              </div>
-            </div>
+        <div className="bottom-text">
+          <p>Don't have an account?{' '}
+            <Link to="/register">Create one</Link>
+          </p>
+        </div>
 
-            <div>
-              <button
-                type="submit"
-                disabled={isLoading}
-                className="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50"
-              >
-                {isLoading ? (
-                  'Signing in...'
-                ) : (
-                  <>
-                    <LogIn className="mr-2 h-5 w-5" />
-                    Sign in
-                  </>
-                )}
-              </button>
-            </div>
-          </form>
-
-          <div className="mt-6">
-            <div className="relative">
-              <div className="absolute inset-0 flex items-center">
-                <div className="w-full border-t border-gray-300" />
-              </div>
-              <div className="relative flex justify-center text-sm">
-                <span className="px-2 bg-white text-gray-500">Demo Accounts</span>
-              </div>
-            </div>
-
-            <div className="mt-6 grid grid-cols-1 gap-3">
-              <div className="bg-gray-50 p-3 rounded-md text-sm">
-                <p><strong>Admin:</strong> admin@example.com / admin123</p>
-                <p><strong>Employee:</strong> john@example.com / employee123</p>
-              </div>
-            </div>
+        <div className="demo">
+          <div className="divider">Demo Accounts</div>
+          <div className="credentials">
+            <p><strong>Admin:</strong> admin@example.com / admin123</p>
+            <p><strong>Employee:</strong> aman@example.com / employee123</p>
           </div>
         </div>
-      </div>
-    </div>
+      </form>
+    </StyledWrapper>
   );
 };
+
+const StyledWrapper = styled.div`
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  background-color: #f3f4f6;
+  padding: 1rem;
+
+  .form_main {
+    width: min(100%, 360px);
+    background: white;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+  }
+
+  .heading {
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #111827;
+    text-align: center;
+    margin-bottom: 1.5rem;
+  }
+
+  .error-container {
+    display: flex;
+    gap: 0.5rem;
+    padding: 0.75rem;
+    background: #fef2f2;
+    border-radius: 6px;
+    margin-bottom: 1rem;
+
+    .error-icon {
+      color: #dc2626;
+      width: 1rem;
+      height: 1rem;
+    }
+
+    .error-text {
+      color: #dc2626;
+      font-size: 0.875rem;
+    }
+  }
+
+  .inputContainer {
+    position: relative;
+    margin-bottom: 1rem;
+
+    .inputIcon {
+      position: absolute;
+      left: 0.75rem;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #6b7280;
+      width: 1.25rem;
+      height: 1.25rem;
+    }
+
+    .inputField {
+      width: 100%;
+      padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      font-size: 0.875rem;
+      transition: border-color 0.15s ease;
+
+      &:focus {
+        outline: none;
+        border-color: #4f46e5;
+        box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1);
+      }
+
+      &::placeholder {
+        color: #9ca3af;
+      }
+    }
+
+    .error-message {
+      color: #dc2626;
+      font-size: 0.75rem;
+      margin-top: 0.25rem;
+    }
+  }
+
+  .options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-size: 0.875rem;
+
+    .remember {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: #4b5563;
+
+      input[type="checkbox"] {
+        width: 1rem;
+        height: 1rem;
+        border-radius: 4px;
+        accent-color: #4f46e5;
+      }
+    }
+
+    .forgot {
+      color: #4f46e5;
+      text-decoration: none;
+      
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .submit-button {
+    width: 100%;
+    padding: 0.75rem;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s ease;
+
+    &:hover {
+      background: #4338ca;
+    }
+
+    &:disabled {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+  }
+
+  .bottom-text {
+    margin: 1.5rem 0;
+    text-align: center;
+    font-size: 0.875rem;
+    color: #4b5563;
+
+    a {
+      color: #4f46e5;
+      text-decoration: none;
+      font-weight: 500;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+
+  .demo {
+    .divider {
+      position: relative;
+      text-align: center;
+      font-size: 0.875rem;
+      color: #6b7280;
+      margin: 1rem 0;
+
+      &::before {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 0;
+        right: 0;
+        height: 1px;
+        background: #e5e7eb;
+        z-index: -1;
+      }
+
+      &::after {
+        content: attr(data-content);
+        background: white;
+        padding: 0 0.5rem;
+      }
+    }
+
+    .credentials {
+      background: #f9fafb;
+      border: 1px solid #e5e7eb;
+      border-radius: 6px;
+      padding: 0.75rem;
+      font-size: 0.75rem;
+
+      p {
+        color: #4b5563;
+        margin: 0.25rem 0;
+
+        strong {
+          color: #374151;
+        }
+      }
+    }
+  }
+
+  @media (max-width: 640px) {
+    padding: 1rem;
+
+    .form_main {
+      padding: 1.5rem;
+    }
+
+    .heading {
+      font-size: 1.25rem;
+    }
+
+    .options {
+      flex-direction: column;
+      gap: 1rem;
+      align-items: flex-start;
+    }
+  }
+`;
 
 export default Login;

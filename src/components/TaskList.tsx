@@ -1,7 +1,7 @@
 import React from 'react';
 import { Task } from '../types';
 import { useAuth } from '../context/AuthContext';
-import { useTasks } from '../context/TaskContext';
+import { useTasks } from '../hooks/useTasks';
 import { Calendar, CheckCircle, Clock, AlertCircle, Check, XCircle } from 'lucide-react';
 
 interface TaskListProps {
